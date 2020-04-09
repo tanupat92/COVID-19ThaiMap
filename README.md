@@ -3,7 +3,7 @@ This is an interactive map made by R Shiny and leaflet. The dataset is from DDC,
 
 ## Getting Started
 
-You can use R to run the application straight from GitHub.
+You can use R to run the application straight from GitHub. (Need to install required packages first. See Below.)
 
 ```
 library(shiny)
@@ -13,11 +13,11 @@ or try using the application at https://tanupat-boon.shinyapps.io/COVID-19Thaima
 
 ### Prerequisites
 
-First, you need to install R and Rstudio. Then, you must install shiny library.
+First, you need to install R and Rstudio. Then, you must install these libraries.
 
 ```
-install.packages('shiny')
-library(shiny)
+install.packages(c('shiny', 'leaflet', 'shinythemes', 'shinyWidgets', 'httr', 'jsonlite', 'readr', 'dplyr', 'tidyr', 'lubridate'))
+
 ```
 
 ## Dataset
