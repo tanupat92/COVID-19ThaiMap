@@ -36,9 +36,7 @@ data$long <- long
 data$lat <- lat
 
 server <- function(input, output, session) {
-  observe({updateSliderTextInput(session = session, inputId = 'agerange', 
-                                 from_fixed  = minage,
-                                 to_fixed = maxage)
+  observe({
           updateDateRangeInput(session=session, inputId = 'daterange', start = earlydate, end = latedate, min = earlydate,
                                max = latedate)
           updatePickerInput(session=session, inputId = 'nations', selected = nationality, choices = nationality)})
