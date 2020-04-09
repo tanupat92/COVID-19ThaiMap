@@ -3,7 +3,7 @@ This is an interactive map made by R Shiny and leaflet. The dataset is from DDC,
 
 ## Getting Started
 
-You can run the application from GitHub.
+You can use R to run the application straight from GitHub.
 
 ```
 library(shiny)
