@@ -16,7 +16,7 @@ or try using the application at https://tanupat-boon.shinyapps.io/COVID-19Thaima
 First, you need to install R and Rstudio. Then, you must install these libraries.
 
 ```
-install.packages(c('shiny', 'leaflet', 'shinythemes', 'shinyWidgets', 'httr', 'jsonlite', 'readr', 'dplyr', 'tidyr', 'lubridate'))
+install.packages(c('shiny', 'leaflet', 'shinythemes', 'shinyWidgets', 'httr', 'jsonlite', 'readr', 'dplyr', 'tidyr', 'lubridate', 'ggplot2', 'plotly'))
 
 ```
 
@@ -37,7 +37,17 @@ Latitudes and longitudes of each provinces are from https://opendata.data.go.th/
 
 * **Tanupat Boonchalermvichien, MD.** - *Initial work* - [Dara Network](https://tanupat-boon.shinyapps.io/dara_network/)
 
+## Credits
+
+* [DDC MOPH Thailand](https://ddc.moph.go.th/) - Data
+* [KIDKARNMAI](http://www.kidkarnmai.com/) - Develop API
+* [Thailand COVID19 Digital Group (TCDG)](https://www.facebook.com/groups/192150165377624/) - Group of Devs for COVID-19 
+* [SmileHost](https://smilehost.asia/) - Host server for API
+
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+
 
