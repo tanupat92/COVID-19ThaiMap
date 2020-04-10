@@ -8,7 +8,8 @@ library(lubridate)
 library(readr)
 library(shinyWidgets)
 library(tidyr)
-
+library(ggplot2)
+library(plotly)
 
 url = 'https://covid19.th-stat.com/api/open/cases'
 
@@ -37,9 +38,9 @@ data$lat <- lat
 
 server <- function(input, output, session) {
   observe({
-          updateDateRangeInput(session=session, inputId = 'daterange', start = earlydate, end = latedate, min = earlydate,
-                               max = latedate)
-          updatePickerInput(session=session, inputId = 'nations', selected = nationality, choices = nationality)})
+    updateDateRangeInput(session=session, inputId = 'daterange', start = earlydate, end = latedate, min = earlydate,
+                         max = latedate)
+    updatePickerInput(session=session, inputId = 'nations', selected = nationality, choices = nationality)})
   rvalData <- reactive({data %>% filter(
     date_confirmed >= input$daterange[1],
     date_confirmed <= input$daterange[2],
@@ -61,11 +62,26 @@ server <- function(input, output, session) {
       )
     
   })
+  output$newcase <- plotly::renderPlotly({
+    ggplotly(rvalData()%>% group_by(date_confirmed) %>% count() %>% ggplot(aes(x= date_confirmed, y = n)) + 
+               geom_line(col='red')+ theme_bw() + 
+               ylab("new cases") + xlab('date') + 
+               scale_x_date(date_labels = "%b") + 
+               theme(plot.margin = margin(5,5,5,5))
+    )
+  })
+  output$cumulativecase <- plotly::renderPlotly({
+    rvalData()%>% group_by(date_confirmed) %>% count() %>% ungroup() %>% 
+      mutate(csum = cumsum(n)) %>% ggplot(aes(x= date_confirmed, y = csum)) + 
+      geom_line(col='red')+ theme_bw() + ylab("cumulative cases") + 
+      xlab('date') + scale_x_date(date_labels = "%b")
+  })
   
   
   output$myweb <- renderUI({
     tagList("See", a('COVID-19 DDC', href='https://covid19.th-stat.com/th'))
   })
+  
   output$update <- renderUI({
     tagList('This data is up to', body=date_update)
   })
@@ -83,11 +99,11 @@ server <- function(input, output, session) {
   observeEvent(input$showabout,{
     url1 <- a("GitHub", href="https://github.com/tanupat92/COVID-19ThaiMap")
     showModal(modalDialog(tags$li('The data is from http://covid19.th-stat.com/th/api which belongs to Department of Disease Control under 
-                          Ministry of Public Health, Thailand. This dataset is updated daily. All data points are not located at exact places.'),
+                                  Ministry of Public Health, Thailand. This dataset is updated daily. All data points are not located at exact places.'),
                           tags$li('API is developed by KIDKARNMAI'), 
                           tags$li('This application is developed by Tanupat B. See codes at', a(url1)), 
                           tags$li('MIT License
-
+                                  
                                   Copyright (c) 2020 Tanupat B. 
                                   
                                   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -107,7 +123,7 @@ server <- function(input, output, session) {
                                   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
                                   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
                                   SOFTWARE.'),title='About'
-    )
-    )
+                          )
+                          )
   })
-}
+  }

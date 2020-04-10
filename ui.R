@@ -9,14 +9,14 @@
 library(shiny)
 library(shinythemes)
 library(shinyWidgets)
-
+library(plotly)
 
 shinyUI(bootstrapPage(
   
   theme = shinythemes:: shinytheme('simplex'),
   
   leaflet::leafletOutput('map', width = '100%', height = '100%'),
-  absolutePanel(top=10, right=10, id='controls', clas = "panel panel-default", fixed = TRUE, draggable = FALSE,
+  absolutePanel(top=10, right=10, id='controls', class = "panel panel-default", fixed = TRUE, draggable = TRUE,
                 HTML('<button data-toggle="collapse" data-target="#demo">Hide</button>'),
                 tags$div(id='demo', class="collapse in",
                          shinyWidgets::sliderTextInput('agerange', 'Age range:',
@@ -37,9 +37,11 @@ shinyUI(bootstrapPage(
                          shinyWidgets::pickerInput(
                            'nations', 'Nationality:', choices=NULL, multiple = TRUE, selected = NULL),
                          uiOutput('update'),
+                         plotlyOutput('newcase', height = '140px', width = '100%'),
+                         plotlyOutput('cumulativecase', height = '140px', width = '100%'),
                          uiOutput('myweb'),
                          tags$style(type = 'text/css',"html, body {width:100%;height:100%}
-                                    #controls{backgroud-color:white;padding:20px;"),
+                                    #controls {backgroud-color:white;padding:10px;opacity:0.8"),
                          actionButton('showabout', 'About', icon = icon('question-circle')))
                 
                 )
