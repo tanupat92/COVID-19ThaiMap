@@ -11,10 +11,17 @@ library(tidyr)
 library(ggplot2)
 library(plotly)
 
-url = 'https://covid19.th-stat.com/api/open/cases'
-
+url1 = 'https://covid19.th-stat.com/api/open/cases'
+url2 = 'https://covid19.th-stat.com/api/open/today'
 coord <- read_csv('latlongprovince.csv')
-r <- GET(url)
+r <- GET(url1)
+s <- GET(url2)
+C <- content(s, as = 'text', encoding = 'UTF-8')
+J <- fromJSON(C)
+confirmed <- J$Confirmed
+recovered <- J$Recovered
+deaths <- J$Deaths
+new <- J$NewConfirmed
 date_request <- headers(r)$date
 Content <- content(r, as = 'text', encoding = 'UTF-8')
 json <- fromJSON(Content)
@@ -57,7 +64,7 @@ server <- function(input, output, session) {
       addTiles() %>%
       addCircleMarkers(
         popup = ~ summary,
-        radius = 10,
+        radius = 5,
         fillColor = 'red', color = 'red', weight = 1
       )
     
@@ -81,9 +88,10 @@ server <- function(input, output, session) {
   output$myweb <- renderUI({
     tagList("See", a('COVID-19 DDC', href='https://covid19.th-stat.com/th'))
   })
-  
+  output$number1 <- renderUI({tags$h4('Total ', confirmed, ' cases')})
+  output$number2 <- renderUI({tags$body(recovered, ' recovered  ', deaths, ' deaths  ', new, ' new cases' )}) 
   output$update <- renderUI({
-    tagList('This data is up to', body=date_update)
+    tags$i('This data is up to', date_update)
   })
   
   observeEvent(input$allnation, {
@@ -104,26 +112,9 @@ server <- function(input, output, session) {
                           tags$li('This application is developed by Tanupat B. See codes at', a(url1)), 
                           tags$li('MIT License
                                   
-                                  Copyright (c) 2020 Tanupat B. 
-                                  
-                                  Permission is hereby granted, free of charge, to any person obtaining a copy
-                                  of this software and associated documentation files (the "Software"), to deal
-                                  in the Software without restriction, including without limitation the rights
-                                  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-                                  copies of the Software, and to permit persons to whom the Software is
-                                  furnished to do so, subject to the following conditions:
-                                  
-                                  The above copyright notice and this permission notice shall be included in all
-                                  copies or substantial portions of the Software.
-                                  
-                                  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-                                  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-                                  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-                                  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-                                  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-                                  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-                                  SOFTWARE.'),title='About'
-                          )
-                          )
+                                  Copyright (c) 2020 Tanupat B.'),title='About'
+    )
+    )
   })
-  }
+
+}
