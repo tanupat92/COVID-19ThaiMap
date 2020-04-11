@@ -16,7 +16,7 @@ or try using the application at https://tanupat-boon.shinyapps.io/COVID-19Thaima
 First, you need to install R and Rstudio. Then, you must install these libraries.
 
 ```
-install.packages(c('shiny', 'leaflet', 'shinythemes', 'shinyWidgets', 'httr', 'jsonlite', 'readr', 'dplyr', 'tidyr', 'lubridate', 'ggplot2', 'plotly'))
+install.packages(c('shiny', 'leaflet', 'shinythemes', 'shinyWidgets', 'httr', 'jsonlite', 'readr', 'dplyr', 'tidyr', 'lubridate', 'ggplot2', 'plotly', 'shinycssloaders'))
 
 ```
 
